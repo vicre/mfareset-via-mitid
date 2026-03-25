@@ -25,17 +25,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "dev-only-insecure-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG')
+DEBUG = os.getenv('DJANGO_DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+##### CAS (dtubase login portal) #####
+CAS_SERVER_URL = "https://auth2.dtu.dk/DTU/"
+CAS_VERSION = "3"
+
+
+LOGIN_URL = "cas_ng_login"
+LOGOUT_URL = "cas_ng_logout"
+LOGIN_REDIRECT_URL = "/profile/"
+LOGOUT_REDIRECT_URL = "/"
+
 
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "django_cas_ng.backends.CASBackend",
 ]
+##### CAS (dtubase login portal) #####
+
 
 # Application definition
 
@@ -46,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Above is vanilla
     "django_cas_ng",
     "core",
 ]
@@ -58,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Add CAS middleware, above is vanilla
+    "django_cas_ng.middleware.CASMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -115,7 +131,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Europe/Copenhagen"
 
 USE_I18N = True
 

@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>CAS Profile</title>
+</head>
+<body>
+    <h1>CAS Profile</h1>
+
+    <p><strong>Django username:</strong> {{ user.username }}</p>
+
+    <h2>Raw CAS attributes</h2>
+    {% if cas_attributes %}
+        <pre>{{ cas_attributes }}</pre>
+        <ul>
+            {% for key, value in cas_attributes.items %}
+                <li><strong>{{ key }}</strong>: {{ value }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No CAS attributes found in session.</p>
+    {% endif %}
+
+    <p><a href="{% url 'cas_ng_logout' %}">Logout</a></p>
+</body>
+</html>

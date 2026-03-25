@@ -16,9 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import home
+from core.views import home, profile
+import django_cas_ng.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home, name="home"),
+    path("profile/", profile, name="profile"),
+
+    path("accounts/login", django_cas_ng.views.LoginView.as_view(), name="cas_ng_login"),
+    path("accounts/logout", django_cas_ng.views.LogoutView.as_view(), name="cas_ng_logout"),
 ]
+
