@@ -32,7 +32,7 @@ if len(SECRET_KEY) < 32:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG").lower()
 if DEBUG not in {"true", "false"}:
- raise RuntimeError("DEBUG must be 'true' or 'false'")
+    raise RuntimeError("DEBUG must be 'true' or 'false'")
 
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
