@@ -31,8 +31,6 @@ if len(SECRET_KEY) < 32:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG").lower()
-if DEBUG is None:
-    raise RuntimeError("DEBUG is not set")
 if DEBUG not in {"true", "false"}:
  raise RuntimeError("DEBUG must be 'true' or 'false'")
 
