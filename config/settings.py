@@ -33,7 +33,11 @@ if len(SECRET_KEY) < 32:
 # This will logic out as either a False or True statement, where default is False.
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [
+    "mfa-dtu.vezit.net",
+    "127.0.0.1",
+    "localhost",
+    ]
 
 ##### CAS (dtubase login portal) #####
 CAS_SERVER_URL = "https://auth2.dtu.dk/DTU/"
