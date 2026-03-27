@@ -6,7 +6,11 @@ services:
     environment:
       - SQLITE_PATH=/data/db.sqlite3
       - DJANGO_SETTINGS_MODULE=config.settings
-
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - AZURE_APP_REGISTRATION_CLIENT_ID=${AZURE_APP_REGISTRATION_CLIENT_ID}
+      - AZURE_APP_REGISTRATION_CLIENT_SECRET=${AZURE_APP_REGISTRATION_CLIENT_SECRET}
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      
     volumes:
       - mitid-data:/data
 
