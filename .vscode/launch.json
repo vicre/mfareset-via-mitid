@@ -10,6 +10,7 @@
       "django": true,
       "justMyCode": true,
       "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
       "env": {
         "DJANGO_SETTINGS_MODULE": "config.settings"
       }
