@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import logging
+
 
 # Load env variables 
 load_dotenv()
@@ -20,13 +22,22 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+
+VALID_LOG_LEVELS = {"CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"}
+
+LOG_LEVEL_DJANGO = os.getenv("LOG_LEVEL_DJANGO").upper()
+
+if LOG_LEVEL_DJANGO not in VALID_LOG_LEVELS:
+    raise ValueError(f"Invalid LOG_LEVEL_DJANGO: {LOG_LEVEL_DJANGO}")
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY is not set")
 if len(SECRET_KEY) < 32:
     raise ValueError("DJANGO_SECRET_KEY must be at least 32 characters long")
 
@@ -38,6 +49,14 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     ]
+
+# Needs to be validated if this is needed, or has weaknesses, before being put in production
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://mfa-dtu.vezit.net",
+]
+
 
 ##### CAS (dtubase login portal) #####
 CAS_SERVER_URL = "https://auth2.dtu.dk/DTU/"
@@ -155,3 +174,47 @@ STATIC_ROOT = "/app/staticfiles"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL_DJANGO,
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL_DJANGO,
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.server": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "core": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL_DJANGO,
+            "propagate": False,
+        },
+    },
+}
