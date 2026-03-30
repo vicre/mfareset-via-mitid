@@ -2,6 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from core.utils.graph import list_user_authentication_methods
 from core.utils.auth_methods import prettify_auth_methods
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def home(request):
     return render(request, "core/home.html")
@@ -20,9 +24,9 @@ def profile(request):
 
         raw_methods = list_user_authentication_methods(username)
         auth_methods = prettify_auth_methods(raw_methods)
-    except Exception as exc:
-        graph_error = str(exc)
-        username = request.user.username
+    except Exception:
+        logger.exception("Failed to fetch authentication methods for %s", username)
+        graph_error = "Could not retrieve authentication methods at the moment."
 
     return render(
         request,
