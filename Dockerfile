@@ -27,11 +27,10 @@ RUN mkdir -p /data /app/staticfiles
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Run with gunicorn
-CMD ["gunicorn", "config.wsgi:application", \
-     "--bind", "0.0.0.0:8000", \
-     "--workers", "3", \
-     "--access-logfile", "-", \
-     "--error-logfile", "-", \
-     "--log-level", ${LOG_LEVEL_GUNICORN:-info}, \
-     "--capture-output"]
+CMD ["sh", "-c", "gunicorn config.wsgi:application \
+  --bind 0.0.0.0:8000 \
+  --workers 3 \
+  --access-logfile - \
+  --error-logfile - \
+  --log-level ${LOG_LEVEL_GUNICORN:-info} \
+  --capture-output"]
