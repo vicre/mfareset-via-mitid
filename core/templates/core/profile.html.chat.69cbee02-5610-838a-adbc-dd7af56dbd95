@@ -69,7 +69,7 @@
     <div class="modal-overlay hidden" id="reset-mfa-modal">
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="reset-mfa-title">
             <h2 id="reset-mfa-title">Reset MFA</h2>
-            <p>Are you sure you want to reset your MFA methods?</p>
+            <p>Are you sure you would like reset your mfa methods?</p>
 
             <div class="modal-actions">
                 <button type="button" class="modal-btn modal-btn-cancel" id="cancel-reset-btn">
