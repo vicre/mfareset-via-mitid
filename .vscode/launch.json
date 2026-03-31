@@ -26,8 +26,21 @@
       "webRoot": "${workspaceFolder}/core",
       "disableNetworkCache": true
     },
+    {
+      "name": "core.scripts.test_graph",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/manage.py",
+      "args": [
+        "runscript",
+        "test_graph",
+        "--script-args",
+        "vicre@dtu.dk"
+      ],
+      "django": true,
+      "justMyCode": true
+    }
   ],
-
   "compounds": [
     {
       // (5) Start All: run Next.js, attach to the router server, and open the browser
