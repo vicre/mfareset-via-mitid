@@ -51,6 +51,8 @@ def graph_get(url: str) -> dict[str, Any]:
     return response.json()
 
 
+
+
 def list_user_authentication_methods(user_principal_name: str) -> list[dict[str, Any]]:
     url = (
         "https://graph.microsoft.com/v1.0/"
@@ -58,3 +60,14 @@ def list_user_authentication_methods(user_principal_name: str) -> list[dict[str,
     )
     data = graph_get(url)
     return data.get("value", [])
+
+
+def delete_user_authentication_method(authentication_method_id):
+    pass
+#     user_principal_name: str, authentication_method_id: str
+# ) -> None:
+#     url = (
+#         "https://graph.microsoft.com/v1.0/"
+#         f"users/{user_principal_name}/authentication/methods/{authentication_method_id}"
+#     )
+#     graph_delete(url)
