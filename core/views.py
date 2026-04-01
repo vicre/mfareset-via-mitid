@@ -51,11 +51,13 @@ def reset_mfa(request):
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
     try:
-        upn = request.user.username  # or your resolved UPN field
-        methods = list_user_authentication_methods(upn)
+        username = request.user.username.strip().lower()
+        if "@" not in username:
+            username = f"{username}@dtu.dk"
+        methods = list_user_authentication_methods(username)
         mfa_methods = prepare_auth_methods(methods)
 
-        message = reset_mfa_methods(upn, mfa_methods)
+        message = reset_mfa_methods(username, mfa_methods)
 
         return JsonResponse({
             "success": True,
