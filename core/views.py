@@ -1,8 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from core.utils.graph import list_user_authentication_methods
-from core.utils.auth_methods import prettify_auth_methods
+from core.utils.auth_methods import prepare_auth_methods
+from core.utils.reset_mfa import reset_mfa_methods
 import logging
+
+
+import time
+from django.http import JsonResponse
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +28,7 @@ def profile(request):
             username = f"{username}@dtu.dk"
 
         raw_methods = list_user_authentication_methods(username)
-        auth_methods = prettify_auth_methods(raw_methods)
+        auth_methods = prepare_auth_methods(raw_methods)
     except Exception:
         logger.exception("Failed to fetch authentication methods for %s", username)
         graph_error = "Could not retrieve authentication methods at the moment."
@@ -38,3 +43,29 @@ def profile(request):
             "graph_error": graph_error,
         },
     )
+
+
+@login_required
+def reset_mfa(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        username = request.user.username.strip().lower()
+        if "@" not in username:
+            username = f"{username}@dtu.dk"
+        methods = list_user_authentication_methods(username)
+        mfa_methods = prepare_auth_methods(methods)
+
+        message = reset_mfa_methods(username, mfa_methods)
+
+        return JsonResponse({
+            "success": True,
+            "message": message,
+        }, status=200)
+
+    except Exception as exc:
+        return JsonResponse({
+            "success": False,
+            "message": str(exc),
+        }, status=500)

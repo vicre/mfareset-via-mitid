@@ -1,0 +1,76 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from core.utils.graph import (
+    delete_user_authentication_method,
+    list_user_authentication_methods,
+)
+from core.utils.auth_methods import prettify_auth_methods
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def home(request):
+    return render(request, "core/home.html")
+
+
+@login_required
+def profile(request):
+    attributes = request.session.get("attributes", {})
+    auth_methods = []
+    graph_error = None
+    username = request.user.username.strip().lower()
+
+    if "@" not in username:
+        username = f"{username}@dtu.dk"
+
+    try:
+        raw_methods = list_user_authentication_methods(username)
+        auth_methods = prettify_auth_methods(raw_methods)
+
+        if request.method == "POST":
+            method_id = request.POST.get("method_id", "").strip()
+            confirmation_name = request.POST.get("confirmation_name", "").strip()
+            method_lookup = {method["id"]: method for method in auth_methods}
+            selected_method = method_lookup.get(method_id)
+
+            if not selected_method:
+                messages.error(request, "Authentication method could not be found.")
+            elif not selected_method["can_delete"]:
+                messages.error(request, "This authentication method cannot be deleted.")
+            elif confirmation_name != selected_method["label"]:
+                messages.error(
+                    request,
+                    f'Type "{selected_method["label"]}" exactly to delete this method.',
+                )
+            else:
+                delete_user_authentication_method(username, method_id)
+                messages.success(
+                    request,
+                    f'{selected_method["label"]} deletion request has been sent.',
+                )
+
+            return redirect("profile")
+    except Exception:
+        if request.method == "POST":
+            logger.exception("Failed to delete authentication method for %s", username)
+            messages.error(
+                request,
+                "Could not delete the authentication method at the moment.",
+            )
+            return redirect("profile")
+
+        logger.exception("Failed to fetch authentication methods for %s", username)
+        graph_error = "Could not retrieve authentication methods at the moment."
+
+    return render(
+        request,
+        "core/profile.html",
+        {
+            "cas_attributes": attributes,
+            "resolved_upn": username,
+            "auth_methods": auth_methods,
+            "graph_error": graph_error,
+        },
+    )
