@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CoreConfig(AppConfig):
+class MFAResetViaMitIDConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'core'
+    name = 'mfareset_via_mitid'

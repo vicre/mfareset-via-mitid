@@ -1,11 +1,11 @@
 import time
 from typing import Any
 
-from core.utils.graph import (
+from mfareset_via_mitid.utils.graph import (
     delete_user_authentication_method,
     list_user_authentication_methods,
 )
-from core.utils.auth_methods import prepare_auth_methods
+from mfareset_via_mitid.utils.auth_methods import prepare_auth_methods
 
 
 def reset_mfa_methods(

@@ -1,11 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from core.utils.graph import (
+from mfareset_via_mitid.utils.graph import (
     delete_user_authentication_method,
     list_user_authentication_methods,
 )
-from core.utils.auth_methods import prettify_auth_methods
+from mfareset_via_mitid.utils.auth_methods import prettify_auth_methods
 import logging
 
 logger = logging.getLogger(__name__)

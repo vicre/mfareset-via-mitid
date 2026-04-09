@@ -4,7 +4,7 @@ __pycache__/
 db.sqlite3
 .env
 .DS_Store
-core/migrations/__init__.py
+mfareset_via_mitid/migrations/__init__.py
 config/__init__.py
-core/__init__.py
+mfareset_via_mitid/__init__.py
 test/

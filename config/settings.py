@@ -87,7 +87,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Above is vanilla
     "django_cas_ng",
-    "core",
+    "mfareset_via_mitid",
 ]
 
 # Apps only needed for development like, the ability runscript(s) for testing.

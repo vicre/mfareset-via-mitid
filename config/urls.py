@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import home, profile, reset_mfa
+from mfareset_via_mitid.views import home, profile, reset_mfa
 import django_cas_ng.views
 
 urlpatterns = [

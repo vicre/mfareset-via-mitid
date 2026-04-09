@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from core.utils.graph import list_user_authentication_methods
-from core.utils.auth_methods import prepare_auth_methods
-from core.utils.reset_mfa import reset_mfa_methods
+from mfareset_via_mitid.utils.graph import list_user_authentication_methods
+from mfareset_via_mitid.utils.auth_methods import prepare_auth_methods
+from mfareset_via_mitid.utils.reset_mfa import reset_mfa_methods
 import logging
 
 
