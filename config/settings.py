@@ -225,3 +225,9 @@ LOGGING = {
         },
     },
 }
+
+
+# Directories where Django looks for additional static files (e.g. compiled Tailwind output)
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
