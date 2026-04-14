@@ -2,7 +2,7 @@
 
 Denne app giver en DTUBasebruger (en bruger med CPR) mulighed for at nulstille deres multifactor, via MitID.
 
-<img src="core/static/core/login_guide.gif" alt="Login guide" width="500">
+<img src="mfareset_via_mitid/static/core/login_guide.gif" alt="Login guide" width="500">
 
 ## For udviklere
 
